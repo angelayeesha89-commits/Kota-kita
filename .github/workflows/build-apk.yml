@@ -2,10 +2,9 @@
 name: Build KOTA KITA APK
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,9 +16,9 @@ jobs:
 
       - name: Extract game source
         run: |
-          unzip -o KOTA_KITA_SOURCE.zip -d .
-          ls -la
-          ls -la android
+          unzip -o KOTA_KITA_SOURCE.zip
+          ls -la KOTA_KITA_SOURCE
+          ls -la KOTA_KITA_SOURCE/android
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -29,7 +28,7 @@ jobs:
 
       - name: Build Android APK
         run: |
-          cd android
+          cd KOTA_KITA_SOURCE/android
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -37,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: KOTA-KITA-APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: KOTA_KITA_SOURCE/android/app/build/outputs/apk/debug/app-debug.apk
